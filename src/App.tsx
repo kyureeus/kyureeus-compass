@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { LandingPage } from './pages/LandingPage'
-import { AssetInventoryDashboard } from './pages/AssetInventoryDashboard'
+import { Dashboard as AssetInventoryDashboard } from './pages/asset-inventory/Dashboard'
 
 function App() {
   return (
