@@ -23,7 +23,6 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   trendType = 'neutral', 
   TrendIcon,
   Icon, 
-  showUnderline = false,
   delay = 0 
 }) => {
   const trendColor = {

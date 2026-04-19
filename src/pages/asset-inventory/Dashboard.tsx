@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Database, TriangleAlert, CircleAlert, ArrowUpRight, ShieldCheck, Activity, Clock } from 'lucide-react';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { PageHeader } from './components/PageHeader';
 import { StatsCard } from './components/StatsCard';
 import { DashboardTabs } from './components/DashboardTabs';
 import { OSDistributionCard } from './components/OSDistributionCard';
+import { AgentCoverageCard } from './components/AgentCoverageCard';
+import { RiskScoreCard } from './components/RiskScoreCard';
+import { AssetTable } from './components/AssetTable';
+import { AssetInventoryHeader } from './components/AssetInventoryHeader';
+import { BotSidebar } from './components/BotSidebar';
 
 export const Dashboard: React.FC = () => {
+  const [isBotOpen, setIsBotOpen] = useState(false);
+
   return (
     <DashboardLayout>
+      <BotSidebar isOpen={isBotOpen} onClose={() => setIsBotOpen(false)} />
       {/* Sticky Layout Header */}
       <header className="h-16 border-b border-white/[0.05] bg-black/40 backdrop-blur-xl px-8 flex items-center sticky top-0 z-30">
         <div className="flex items-center gap-3 w-full max-w-7xl mx-auto">
@@ -18,18 +26,20 @@ export const Dashboard: React.FC = () => {
       </header>
 
       {/* Main Page Content */}
-      <div className="p-8 md:p-12 w-full max-w-7xl mx-auto">
-        <DashboardTabs />
-        
-        <PageHeader 
-          title="IT Assets" 
-          subtitle="Enterprise computers, servers, and managed endpoints"
-          icon={Database}
-        />
+      <div className="p-8 md:p-12 w-full max-w-7xl mx-auto flex flex-col gap-12">
+        <div className="flex flex-col gap-8">
+          <DashboardTabs />
+          
+          <PageHeader 
+            title="IT Assets" 
+            subtitle="Enterprise computers, servers, and managed endpoints"
+            icon={Database}
+            onBotToggle={() => setIsBotOpen(!isBotOpen)}
+          />
+        </div>
 
         {/* Dashboard Statistics Grid (4-Column Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-          {/* ... existing StatsCards remain but updated icons ... */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <StatsCard 
             title="Total Assets"
             value="1,818"
@@ -56,7 +66,6 @@ export const Dashboard: React.FC = () => {
             trendType="warning"
             TrendIcon={TriangleAlert}
             Icon={Activity}
-            showUnderline={true}
             delay={0.3}
           />
           <StatsCard 
@@ -70,18 +79,22 @@ export const Dashboard: React.FC = () => {
           />
         </div>
 
-        {/* Analytics Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-12 xl:col-span-8">
-            <OSDistributionCard />
-          </div>
+        {/* Analytics Section: Split Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+          {/* Left Side: OS Distribution (Full Height) */}
+          <OSDistributionCard />
           
-          {/* Reserved for future right-side analytics cards */}
-          <div className="lg:col-span-12 xl:col-span-4 flex flex-col gap-6">
-            <div className="h-full min-h-[400px] border border-dashed border-white/10 flex items-center justify-center text-white/10 uppercase tracking-widest text-xs font-bold">
-               Vulnerability Feed Placeholder
-            </div>
+          {/* Right Side: Stacked Analytics (Two High-Fidelity Cards) */}
+          <div className="flex flex-col gap-6">
+            <AgentCoverageCard />
+            <RiskScoreCard />
           </div>
+        </div>
+
+        {/* Data Grid Section */}
+        <div className="flex flex-col">
+          <AssetInventoryHeader />
+          <AssetTable />
         </div>
       </div>
     </DashboardLayout>
