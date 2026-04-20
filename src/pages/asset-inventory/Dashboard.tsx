@@ -10,18 +10,32 @@ import { RiskScoreCard } from './components/RiskScoreCard';
 import { AssetTable } from './components/AssetTable';
 import { AssetInventoryHeader } from './components/AssetInventoryHeader';
 import { BotSidebar } from './components/BotSidebar';
+import { AssetDistributionDialog } from './components/AssetDistributionDialog';
+import { useTheme } from '../../context/ThemeContext';
+import { cn } from '../../lib/utils';
 
 export const Dashboard: React.FC = () => {
+  const { theme } = useTheme();
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [isDistributionOpen, setIsDistributionOpen] = useState(false);
 
   return (
     <DashboardLayout>
       <BotSidebar isOpen={isBotOpen} onClose={() => setIsBotOpen(false)} />
+      <AssetDistributionDialog isOpen={isDistributionOpen} onClose={() => setIsDistributionOpen(false)} />
       {/* Sticky Layout Header */}
-      <header className="h-16 border-b border-white/[0.05] bg-black/40 backdrop-blur-xl px-8 flex items-center sticky top-0 z-30">
+      <header className={cn(
+        "h-16 border-b transition-all duration-500 backdrop-blur-xl px-8 flex items-center sticky top-0 z-30",
+        theme === 'dark' 
+          ? "border-white/[0.05] bg-black/40" 
+          : "border-gray-100 bg-white/60 shadow-sm"
+      )}>
         <div className="flex items-center gap-3 w-full max-w-7xl mx-auto">
           <Database size={18} className="text-primary hidden md:block" />
-          <h1 className="text-sm font-heading font-medium tracking-widest uppercase text-white/40">Overview</h1>
+          <h1 className={cn(
+            "text-sm font-heading font-medium tracking-widest uppercase transition-colors duration-500",
+            theme === 'dark' ? "text-white/40" : "text-gray-400"
+          )}>Overview</h1>
         </div>
       </header>
 
@@ -32,8 +46,7 @@ export const Dashboard: React.FC = () => {
           
           <PageHeader 
             title="IT Assets" 
-            subtitle="Enterprise computers, servers, and managed endpoints"
-            icon={Database}
+            isBotOpen={isBotOpen}
             onBotToggle={() => setIsBotOpen(!isBotOpen)}
           />
         </div>
@@ -49,6 +62,7 @@ export const Dashboard: React.FC = () => {
             TrendIcon={ArrowUpRight}
             Icon={Database}
             delay={0.1}
+            onClick={() => setIsDistributionOpen(true)}
           />
           <StatsCard 
             title="Agent Coverage"

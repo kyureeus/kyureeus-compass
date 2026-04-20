@@ -46,8 +46,17 @@
   }
   
   body {
-    @apply bg-bg-dark text-text-main font-main antialiased leading-relaxed overflow-x-hidden;
+    @apply font-main antialiased leading-relaxed overflow-x-hidden transition-colors duration-500;
+  }
+  
+  :root.dark body {
+    @apply bg-bg-dark text-text-main;
     background-image: radial-gradient(circle at 50% 50%, #1a0b3b 0%, #050505 100%);
+  }
+  
+  :root.light body {
+    @apply bg-gray-50 text-gray-900;
+    background-image: radial-gradient(circle at 50% 50%, #f9fafb 0%, #f3f4f6 100%);
   }
   
   h1, h2, h3, h4 {

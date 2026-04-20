@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../../lib/utils';
 import { ArrowUpRight } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface RiskTier {
   label: string;
@@ -68,8 +69,13 @@ const riskData: RiskTier[] = [
 ];
 
 export const RiskScoreCard: React.FC = () => {
+  const { theme } = useTheme();
+
   return (
-    <div className="group relative bg-[#0D0D0D] border border-white/[0.05] p-6 lg:p-8 flex flex-col h-full rounded-none overflow-hidden">
+    <div className={cn(
+      "group relative p-6 lg:p-8 flex flex-col h-full rounded-none overflow-hidden border transition-colors duration-500",
+      theme === 'dark' ? "bg-[#0D0D0D] border-white/[0.05]" : "bg-white border-gray-100 shadow-sm"
+    )}>
       {/* Targeting Hover Physics (Compass Style) */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary"></div>
@@ -82,11 +88,16 @@ export const RiskScoreCard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <span className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">Concept 2</span>
-          <h3 className="text-xl font-heading font-bold text-white mt-1 capitalize">Severity funnel with urgency sizing</h3>
-          <p className="text-white/40 text-[13px] font-light mt-1">Tiered risk analysis by asset urgency</p>
+          <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold transition-colors duration-500", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Concept 2</span>
+          <h3 className={cn("text-xl font-heading font-bold mt-1 capitalize transition-colors duration-500", theme === 'dark' ? "text-white" : "text-gray-900")}>Severity funnel with urgency sizing</h3>
+          <p className={cn("text-[13px] font-light mt-1 transition-colors duration-500", theme === 'dark' ? "text-white/40" : "text-gray-500")}>Tiered risk analysis by asset urgency</p>
         </div>
-        <button className="px-5 py-2.5 border border-white/10 text-white text-[13px] font-bold flex items-center gap-2 hover:bg-white hover:text-black transition-all group/btn">
+        <button className={cn(
+          "px-5 py-2.5 border text-[13px] font-bold flex items-center gap-2 transition-all group/btn",
+          theme === 'dark' 
+            ? "border-white/10 text-white hover:bg-white hover:text-black" 
+            : "border-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white"
+        )}>
           Build <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
         </button>
       </div>
@@ -94,36 +105,57 @@ export const RiskScoreCard: React.FC = () => {
       {/* Funnel List */}
       <div className="flex flex-col gap-2 flex-grow">
         {riskData.map((tier, idx) => (
-          <div key={idx} className={cn("relative group/row flex items-center min-h-[64px] px-8 rounded-none border-b border-white/[0.05] overflow-hidden shadow-inner", tier.color)}>
+          <div 
+            key={idx} 
+            className={cn(
+              "relative group/row flex items-center min-h-[64px] px-8 rounded-none border-b overflow-hidden shadow-inner transition-colors duration-500",
+              theme === 'dark' ? tier.color : tier.color.replace('/10', '/5'),
+              theme === 'dark' ? "border-white/[0.05]" : "border-gray-50"
+            )}
+          >
             {/* Animated Background Fill */}
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${tier.fillPercentage}%` }}
               transition={{ duration: 1.5, delay: idx * 0.1, ease: [0.23, 1, 0.32, 1] }}
-              className={cn("absolute inset-y-0 left-0 z-0", tier.color.replace('/10', '/35'))}
+              className={cn(
+                "absolute inset-y-0 left-0 z-0 opacity-20 transition-colors duration-500",
+                theme === 'dark' ? tier.color.replace('/10', '/35') : tier.color.replace('/10', '/40')
+              )}
+              style={{ backgroundColor: tier.dotColor.replace('text-', '') }}
             />
 
             <div className="relative z-10 w-full flex items-center justify-between">
               {/* Left: Indicator & Status */}
               <div className="flex items-center gap-4">
-                <div className={cn("w-3 h-3 rounded-full shrink-0 shadow-[0_0_15px_rgba(0,0,0,0.5)] bg-current animate-pulse", tier.dotColor)} />
+                <div 
+                  className={cn("w-3 h-3 rounded-full shrink-0 shadow-[0_0_15px_rgba(0,0,0,0.5)] animate-pulse")} 
+                  style={{ backgroundColor: tier.dotColor.replace('text-', '') }}
+                />
                 <div className="flex flex-col leading-tight">
-                  <span className={cn("text-[15px] font-bold capitalize", tier.dotColor)}>{tier.label}</span>
-                  <span className={cn("text-[11px] font-medium lowercase", tier.dotColor.replace('text-', 'text-opacity-40 text-'))}>{tier.scoreRange}</span>
+                  <span className={cn("text-[15px] font-bold capitalize transition-colors duration-500")} style={{ color: theme === 'dark' ? tier.dotColor.replace('text-', '') : undefined }}>
+                    <span className={cn(theme === 'dark' ? "" : "text-gray-900")}>{tier.label}</span>
+                  </span>
+                  <span className={cn("text-[11px] font-medium lowercase transition-colors duration-500", theme === 'dark' ? "text-white/40" : "text-gray-400")}>{tier.scoreRange}</span>
                 </div>
               </div>
 
               {/* Center: Count & Integrated Telemetry */}
               <div className="flex flex-col items-center relative pr-[15%]">
-                <span className={cn("text-[20px] font-heading font-bold", tier.dotColor)}>{tier.count}</span>
-                <span className={cn("text-[11px] font-medium lowercase absolute -bottom-3 whitespace-nowrap", tier.dotColor.replace('text-', 'text-opacity-60 text-'))}>
+                <span className={cn("text-[20px] font-heading font-bold transition-colors duration-500", theme === 'dark' ? "text-white" : "text-gray-900")}>{tier.count}</span>
+                <span className={cn("text-[11px] font-medium lowercase absolute -bottom-3 whitespace-nowrap transition-colors duration-500", theme === 'dark' ? "text-white/40" : "text-gray-400")}>
                   {tier.telemetry}
                 </span>
               </div>
 
               {/* Right: Action Pill */}
               <div className="min-w-[100px] flex justify-end">
-                <div className={cn("px-4 py-1.5 bg-black/40 border border-white/5 rounded-full text-[10px] font-bold tracking-wider", tier.dotColor.replace('text-', 'text-opacity-60 text-'))}>
+                <div className={cn(
+                  "px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-colors duration-500 border",
+                  theme === 'dark' 
+                    ? "bg-black/40 border-white/5 text-white/60" 
+                    : "bg-white border-gray-200 text-gray-400"
+                )}>
                   {tier.actionLabel.toUpperCase()}
                 </div>
               </div>

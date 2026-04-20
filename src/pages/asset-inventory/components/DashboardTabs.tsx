@@ -1,44 +1,70 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link2, ShieldCheck, Layers } from 'lucide-react';
+import { Link2, Shield, Layers } from 'lucide-react';
 import { cn } from '../../../lib/utils';
-
-const tabs = [
-  { id: 'unified', label: 'Unified Asset Inventory', icon: Link2 },
-  { id: 'tenable', label: 'Tenable Classification', icon: ShieldCheck },
-  { id: 'ninjaone', label: 'NinjaOne Classification', icon: Layers },
-];
+import { useTheme } from '../../../context/ThemeContext';
 
 export const DashboardTabs: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState('unified');
+  const { theme } = useTheme();
+  const [activeTab, setActiveTab] = React.useState('tenable');
+
+  const tabs = [
+    { id: 'unified', label: 'Unified Asset Inventory', icon: Link2 },
+    { id: 'tenable', label: 'Tenable Classification', icon: Shield, activeColor: 'text-[#f97316]', activeBorder: 'bg-[#f97316]' },
+    { id: 'ninjaone', label: 'NinjaOne Classification', icon: Layers },
+  ];
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-8 p-1 bg-white/[0.02] border border-white/[0.05] w-fit">
+    <div className={cn(
+      "flex items-center gap-2 border-b mb-8 transition-colors duration-500",
+      theme === 'dark' ? "border-white/[0.05]" : "border-gray-100"
+    )}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
+        const Icon = tab.icon;
         
         return (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "group relative flex items-center gap-3 px-5 py-2.5 cursor-pointer transition-all duration-300 rounded-none",
+              "relative px-6 py-4 transition-all duration-300 group flex items-center gap-3",
               isActive 
-                ? "bg-primary/10 text-primary border border-primary/30" 
-                : "text-white/40 hover:text-white/70 border border-transparent hover:border-white/10 hover:bg-white/[0.03]"
+                ? tab.activeColor || (theme === 'dark' ? "text-white" : "text-gray-900")
+                : theme === 'dark' ? "text-white/30 hover:text-white/60" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            <tab.icon size={16} strokeWidth={isActive ? 2 : 1.5} className="shrink-0" />
-            <span className="text-[12px] font-bold tracking-widest uppercase">
-              {tab.label}
-            </span>
-            
-            {/* Selection Indicator on Active */}
+            <Icon size={18} strokeWidth={isActive ? 2 : 1.5} className="shrink-0" />
+            <span className="text-[14px] font-bold tracking-tight whitespace-nowrap">{tab.label}</span>
+
+            {/* Technical Solid Underline Indicator */}
             {isActive && (
+              <div className="absolute bottom-[-1px] left-0 right-0 h-[3px]">
+                <motion.div
+                  layoutId="activeTabUnderline"
+                  className={cn("h-[2px] w-full", tab.activeBorder || "bg-primary")}
+                />
+                {/* Secondary Decorative Strike Line */}
+                <motion.div
+                  layoutId="activeTabUnderlineStrike"
+                  className={cn("h-[1px] w-full mt-[1px] opacity-30", tab.activeBorder || "bg-primary")}
+                />
+              </div>
+            )}
+
+            {/* Background Glow for Active (matching image) */}
+            {isActive && tab.id === 'tenable' && (
               <motion.div 
-                layoutId="active-tab-bg"
-                className="absolute inset-x-0 -bottom-[1px] h-[2px] bg-primary z-10"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                layoutId="activeTabGlow"
+                className="absolute inset-0 bg-[#f97316]/5 -z-10 blur-sm pointer-events-none"
+              />
+            )}
+            
+            {/* Darker background for active Tenable (inset feel from image) */}
+            {isActive && tab.id === 'tenable' && theme === 'dark' && (
+              <motion.div 
+                layoutId="activeTabInset"
+                className="absolute inset-x-2 inset-y-2 bg-black/40 rounded-lg -z-20 border border-white/5"
               />
             )}
           </button>

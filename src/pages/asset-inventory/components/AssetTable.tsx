@@ -8,6 +8,7 @@ import {
   ArrowUpDown
 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface Asset {
   id: string;
@@ -82,12 +83,15 @@ const OSIcon = ({ type }: { type: Asset['os'] }) => {
 };
 
 const RiskTag = ({ level }: { level: Asset['risk'] }) => {
+  const { theme } = useTheme();
   const styles = {
     critical: 'bg-red-500/10 text-red-500 border-red-500/20',
     high: 'bg-amber-600/10 text-amber-500 border-amber-500/20',
     medium: 'bg-lime-600/10 text-lime-500 border-lime-500/20',
     low: 'bg-teal-500/10 text-teal-500 border-teal-500/20',
-    none: 'bg-white/5 text-white/40 border-white/10'
+    none: theme === 'dark' 
+      ? 'bg-white/5 text-white/40 border-white/10' 
+      : 'bg-gray-100 text-gray-400 border-gray-200'
   }[level];
 
   return (
@@ -98,44 +102,64 @@ const RiskTag = ({ level }: { level: Asset['risk'] }) => {
 };
 
 export const AssetTable: React.FC = () => {
+  const { theme } = useTheme();
+
   return (
-    <div className="bg-[#0A0A0A] border border-white/[0.05] flex flex-col overflow-hidden rounded-xl">
+    <div className={cn(
+      "border transition-all duration-500 rounded-xl overflow-hidden",
+      theme === 'dark' ? "bg-[#0A0A0A] border-white/[0.05]" : "bg-white border-gray-200 shadow-sm"
+    )}>
 
       {/* Main Table Body */}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.05] bg-white/[0.01]">
-              <th className="px-8 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">
-                <div className="flex items-center gap-2 cursor-pointer hover:text-white/60 transition-colors">
-                  Asset Name <ArrowUpDown size={10} />
+            <tr className={cn(
+              "border-b transition-colors duration-500",
+              theme === 'dark' ? "border-white/[0.05] bg-white/[0.01]" : "border-gray-100 bg-gray-50/50"
+            )}>
+              <th className={cn("px-8 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>
+                <div className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-colors">
+                   Asset Name <ArrowUpDown size={10} />
                 </div>
               </th>
-              <th className="px-6 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">Status</th>
-              <th className="px-6 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">Networking</th>
-              <th className="px-6 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">OS Platform</th>
-              <th className="px-6 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">Risk Score</th>
-              <th className="px-6 py-4 text-[11px] font-bold text-white/30 uppercase tracking-[0.15em]">Last Seen</th>
+              <th className={cn("px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Status</th>
+              <th className={cn("px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Networking</th>
+              <th className={cn("px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>OS Platform</th>
+              <th className={cn("px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Risk Score</th>
+              <th className={cn("px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em]", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Last Seen</th>
               <th className="px-8 py-4 text-right"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={cn("transition-colors duration-500", theme === 'dark' ? "divide-y divide-white/[0.05]" : "divide-y divide-gray-100")}>
             {mockAssets.map((asset, idx) => (
               <motion.tr 
                 key={asset.id}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="group border-b border-white/[0.03] hover:bg-white/[0.02] transition-all cursor-pointer"
+                className={cn(
+                  "group transition-all duration-300 cursor-pointer border-b",
+                  theme === 'dark' ? "border-white/[0.03] hover:bg-white/[0.02]" : "border-gray-50 hover:bg-primary/5 shadow-sm hover:shadow-md"
+                )}
               >
                 <td className="px-8 py-5">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-none bg-white/[0.03] flex items-center justify-center border border-white/10 group-hover:border-primary/50 transition-colors">
+                    <div className={cn(
+                      "w-8 h-8 rounded-none flex items-center justify-center border transition-colors duration-500",
+                      theme === 'dark' ? "bg-white/[0.03] border-white/10" : "bg-gray-50 border-gray-100 group-hover:bg-primary/10 group-hover:border-primary/30"
+                    )}>
                       <OSIcon type={asset.os} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-white group-hover:text-primary transition-colors">{asset.name}</span>
-                      <span className="text-[11px] text-white/20 lowercase tracking-tight">UID: {asset.id}992384</span>
+                      <span className={cn(
+                        "text-[14px] font-bold transition-colors duration-500",
+                        theme === 'dark' ? "text-white group-hover:text-primary" : "text-gray-700 group-hover:text-primary"
+                      )}>{asset.name}</span>
+                      <span className={cn(
+                        "text-[11px] lowercase tracking-tight transition-colors duration-500",
+                        theme === 'dark' ? "text-white/20" : "text-gray-400"
+                      )}>UID: {asset.id}992384</span>
                     </div>
                   </div>
                 </td>
@@ -147,29 +171,50 @@ export const AssetTable: React.FC = () => {
                       asset.status === 'warning' ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]" :
                       "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]"
                     )} />
-                    <span className="text-[13px] font-medium text-white/60 lowercase">{asset.status}</span>
+                    <span className={cn(
+                      "text-[13px] font-medium lowercase transition-colors duration-500",
+                      theme === 'dark' ? "text-white/60" : "text-gray-500"
+                    )}>{asset.status}</span>
                   </div>
                 </td>
                 <td className="px-6 py-5">
                   <div className="flex flex-col">
-                    <span className="text-[13px] text-white/60 font-mono tracking-tight">{asset.ip}</span>
-                    <span className="text-[10px] text-white/20 font-mono italic">{asset.mac}</span>
+                    <span className={cn(
+                      "text-[13px] font-mono tracking-tight transition-colors duration-500",
+                      theme === 'dark' ? "text-white/60" : "text-gray-600"
+                    )}>{asset.ip}</span>
+                    <span className={cn(
+                      "text-[10px] font-mono italic transition-colors duration-500",
+                      theme === 'dark' ? "text-white/20" : "text-gray-300"
+                    )}>{asset.mac}</span>
                   </div>
                 </td>
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-2">
-                     <span className="text-[13px] text-white/60 capitalize font-medium">{asset.os}</span>
-                     <span className="text-[10px] text-white/20 tracking-wider">v11.0.4</span>
+                     <span className={cn(
+                       "text-[13px] capitalize font-medium transition-colors duration-500",
+                       theme === 'dark' ? "text-white/60" : "text-gray-700 font-semibold"
+                     )}>{asset.os}</span>
+                     <span className={cn(
+                       "text-[10px] tracking-wider transition-colors duration-500",
+                       theme === 'dark' ? "text-white/20" : "text-gray-300"
+                     )}>v11.0.4</span>
                   </div>
                 </td>
                 <td className="px-6 py-5">
                   <RiskTag level={asset.risk} />
                 </td>
                 <td className="px-6 py-5">
-                  <span className="text-[13px] text-white/40 font-medium lowercase tracking-wide">{asset.lastSeen}</span>
+                  <span className={cn(
+                    "text-[13px] font-medium lowercase tracking-wide transition-colors duration-500",
+                    theme === 'dark' ? "text-white/40" : "text-gray-400"
+                  )}>{asset.lastSeen}</span>
                 </td>
                 <td className="px-8 py-5 text-right">
-                  <button className="p-2 text-white/20 hover:text-white transition-colors">
+                  <button className={cn(
+                    "p-2 transition-colors",
+                    theme === 'dark' ? "text-white/20 hover:text-white" : "text-gray-300 hover:text-primary"
+                  )}>
                     <MoreHorizontal size={18} />
                   </button>
                 </td>
@@ -180,12 +225,24 @@ export const AssetTable: React.FC = () => {
       </div>
 
       {/* Table Footer / Pagination Placeholder */}
-      <div className="px-8 py-5 border-t border-white/[0.05] flex items-center justify-between bg-white/[0.01]">
-        <span className="text-[12px] text-white/20 font-medium">Showing <span className="text-white/40">5</span> of <span className="text-white/40">1,818</span> assets</span>
+      <div className={cn(
+        "px-8 py-5 border-t flex items-center justify-between transition-colors duration-500",
+        theme === 'dark' ? "border-white/[0.05] bg-white/[0.01]" : "border-gray-50 bg-gray-50/50"
+      )}>
+        <span className={cn(
+          "text-[12px] font-medium transition-colors duration-500",
+          theme === 'dark' ? "text-white/20" : "text-gray-400"
+        )}>Showing <span className={theme === 'dark' ? "text-white/40" : "text-gray-600"}>5</span> of <span className={theme === 'dark' ? "text-white/40" : "text-gray-600"}>1,818</span> assets</span>
         <div className="flex items-center gap-4">
-          <button className="text-[12px] font-bold text-white/20 hover:text-white transition-colors uppercase tracking-widest disabled:opacity-30" disabled>Previous</button>
-          <div className="h-4 w-[1px] bg-white/10" />
-          <button className="text-[12px] font-bold text-primary hover:opacity-80 transition-colors uppercase tracking-widest">Next Page</button>
+          <button className={cn(
+            "text-[12px] font-bold transition-colors uppercase tracking-widest disabled:opacity-30",
+            theme === 'dark' ? "text-white/20 hover:text-white" : "text-gray-300 hover:text-primary"
+          )} disabled>Previous</button>
+          <div className={cn("h-4 w-[1px]", theme === 'dark' ? "bg-white/10" : "bg-gray-100")} />
+          <button className={cn(
+            "text-[12px] font-bold hover:opacity-80 transition-colors uppercase tracking-widest",
+            "text-primary"
+          )}>Next Page</button>
         </div>
       </div>
     </div>

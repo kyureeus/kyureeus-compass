@@ -8,10 +8,12 @@ import {
   Box, 
   Database,
   Sun,
+  Moon,
   LogOut
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../../lib/utils';
+import { useTheme } from '../../../context/ThemeContext';
 
 type MenuItem = {
   icon: React.ElementType;
@@ -47,21 +49,16 @@ const menuSections: MenuSection[] = [
   }
 ];
 
-const footerItems = [
-  // { icon: ArrowLeftCircle, label: 'Back to Hub', path: '/' },
-  { icon: Sun, label: 'Light Mode', path: '#', onClick: () => console.log('Toggle Light Mode') },
-  { icon: LogOut, label: 'Logout', path: '/logout' },
-];
-
 export const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const isItemActive = (path: string) => location.pathname === path;
 
   // Compass Global primary color (Purple)
   const activeColor = "text-primary";
-  const activeBg = "bg-primary/10";
+  const activeBg = theme === 'dark' ? "bg-primary/10" : "bg-primary/5";
 
   return (
     <motion.aside
@@ -69,15 +66,21 @@ export const Sidebar: React.FC = () => {
       onMouseLeave={() => setIsExpanded(false)}
       initial={false}
       animate={{ width: isExpanded ? 280 : 80 }}
-      className="relative flex flex-col h-screen bg-[#0A0A0A] border-r border-white/5 z-50 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+      className={cn(
+        "relative flex flex-col h-screen z-50 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] border-r transition-colors duration-500",
+        theme === 'dark' ? "bg-[#0A0A0A] border-white/5" : "bg-white border-gray-200 shadow-xl"
+      )}
     >
       {/* Sidebar Header */}
       <div className="h-20 min-h-[5rem] flex items-center px-8 shrink-0">
-        <Sparkles className="text-white shrink-0" size={20} strokeWidth={1.5} />
+        <Sparkles className={cn("shrink-0", theme === 'dark' ? "text-white" : "text-primary")} size={20} strokeWidth={1.5} />
         <motion.span 
           initial={false}
           animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
-          className="ml-4 font-heading font-semibold text-lg text-white whitespace-nowrap overflow-hidden tracking-wide"
+          className={cn(
+            "ml-4 font-heading font-semibold text-lg whitespace-nowrap overflow-hidden tracking-wide transition-colors duration-500",
+            theme === 'dark' ? "text-white" : "text-gray-900"
+          )}
         >
           Menu
         </motion.span>
@@ -95,7 +98,10 @@ export const Sidebar: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2 whitespace-nowrap"
+                    className={cn(
+                      "px-4 text-[10px] font-bold uppercase tracking-[0.2em] mb-2 whitespace-nowrap transition-colors duration-500",
+                      theme === 'dark' ? "text-white/30" : "text-gray-400"
+                    )}
                   >
                     {section.title}
                   </motion.span>
@@ -113,7 +119,9 @@ export const Sidebar: React.FC = () => {
                       "group relative flex items-center h-10 rounded-none px-4 cursor-pointer transition-all duration-200",
                       active 
                         ? cn(activeBg, activeColor) 
-                        : "text-white/40 hover:bg-primary/5 hover:text-primary/80"
+                        : theme === 'dark' 
+                          ? "text-white/40 hover:bg-primary/5 hover:text-primary/80"
+                          : "text-gray-500 hover:bg-primary/5 hover:text-primary"
                     )}
                   >
                     {/* Active Indicator Pillar (Compass Style - Sharp) */}
@@ -124,7 +132,12 @@ export const Sidebar: React.FC = () => {
                     <item.icon 
                       size={18} 
                       strokeWidth={1.5} 
-                      className={cn("shrink-0 transition-colors duration-200", active ? activeColor : "group-hover:text-white")} 
+                      className={cn(
+                        "shrink-0 transition-colors duration-200", 
+                        active 
+                          ? activeColor 
+                          : theme === 'dark' ? "group-hover:text-white" : "group-hover:text-primary"
+                      )} 
                     />
                     
                     <motion.div 
@@ -137,7 +150,7 @@ export const Sidebar: React.FC = () => {
                     
                     {/* Targeting Corners on Active */}
                     {active && (
-                      <div className={cn("absolute inset-0 border border-primary/20")}>
+                      <div className={cn("absolute inset-0 border border-primary/20", theme === 'light' && "border-primary/10")}>
                         <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/40"></div>
                         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/40"></div>
                       </div>
@@ -151,25 +164,46 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Area */}
-      <div className="p-4 border-t border-white/[0.05] shrink-0 bg-black/40">
+      <div className={cn(
+        "p-4 border-t shrink-0 transition-colors duration-500",
+        theme === 'dark' ? "border-white/[0.05] bg-black/40" : "border-gray-100 bg-gray-50/50"
+      )}>
         <div className="flex flex-col gap-1">
-          {footerItems.map((item) => (
-            <Link 
-              key={item.label}
-              to={item.path}
-              onClick={item.onClick}
-              className="group flex items-center h-10 px-4 text-white/40 hover:text-white hover:bg-white/[0.03] transition-all rounded-none"
+          {/* Theme Toggle */}
+          <button 
+            onClick={toggleTheme}
+            className={cn(
+              "group flex items-center h-10 px-4 transition-all rounded-none w-full",
+              theme === 'dark' ? "text-white/40 hover:text-white hover:bg-white/[0.03]" : "text-gray-500 hover:text-primary hover:bg-primary/5"
+            )}
+          >
+            {theme === 'dark' ? <Sun size={18} strokeWidth={1.5} /> : <Moon size={18} strokeWidth={1.5} />}
+            <motion.span 
+              initial={false}
+              animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
+              className="ml-4 font-medium text-[14px] whitespace-nowrap overflow-hidden"
             >
-              <item.icon size={18} strokeWidth={1.5} className="shrink-0" />
-              <motion.span 
-                initial={false}
-                animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
-                className="ml-4 font-medium text-[14px] whitespace-nowrap overflow-hidden"
-              >
-                {item.label}
-              </motion.span>
-            </Link>
-          ))}
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </motion.span>
+          </button>
+
+          {/* Logout */}
+          <Link 
+            to="/logout"
+            className={cn(
+              "group flex items-center h-10 px-4 transition-all rounded-none",
+              theme === 'dark' ? "text-white/40 hover:text-white hover:bg-white/[0.03]" : "text-gray-500 hover:text-primary hover:bg-primary/5"
+            )}
+          >
+            <LogOut size={18} strokeWidth={1.5} className="shrink-0" />
+            <motion.span 
+              initial={false}
+              animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
+              className="ml-4 font-medium text-[14px] whitespace-nowrap overflow-hidden"
+            >
+              Logout
+            </motion.span>
+          </Link>
         </div>
       </div>
     </motion.aside>
