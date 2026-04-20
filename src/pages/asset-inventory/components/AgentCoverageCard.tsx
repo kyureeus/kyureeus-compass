@@ -47,11 +47,11 @@ export const AgentCoverageCard: React.FC = () => {
           <span className={cn(
             "text-[10px] uppercase tracking-[0.2em] font-bold transition-colors duration-500",
             theme === 'dark' ? "text-white/30" : "text-gray-400"
-          )}>Concept 2</span>
+          )}>Monitoring coverage</span>
           <h3 className={cn(
             "text-xl font-heading font-bold mt-1 capitalize transition-colors duration-500",
             theme === 'dark' ? "text-white" : "text-gray-900"
-          )}>Two-state counter with OS breakdown</h3>
+          )}>Agent Coverage</h3>
           <p className={cn(
             "text-[13px] font-light mt-1 transition-colors duration-500",
             theme === 'dark' ? "text-white/40" : "text-gray-500"
@@ -61,7 +61,7 @@ export const AgentCoverageCard: React.FC = () => {
           "px-5 py-2.5 border text-[13px] font-bold flex items-center gap-2 transition-all group/btn",
           theme === 'dark' ? "border-white/10 text-white hover:bg-white hover:text-black" : "border-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white"
         )}>
-          Build <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+          View <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
         </button>
       </div>
 

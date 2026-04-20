@@ -23,7 +23,7 @@ export const ProductHighlight: React.FC = () => {
           className="text-center mb-16 max-w-3xl px-6"
         >
           <h2 className="text-5xl md:text-7xl font-heading font-bold mb-6 text-white tracking-tight">
-            Core Tooling
+            Compass Product
           </h2>
           <p className="text-xl md:text-2xl text-white/40 leading-relaxed font-light">
             Compass provides a unified experience for managing your entire digital ecosystem. 

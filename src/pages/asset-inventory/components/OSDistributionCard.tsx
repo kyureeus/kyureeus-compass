@@ -73,11 +73,11 @@ export const OSDistributionCard: React.FC = () => {
           <span className={cn(
             "text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-500",
             theme === 'dark' ? "text-white/20" : "text-gray-400"
-          )}>CONCEPT B</span>
+          )}>	Operating systems</span>
           <h3 className={cn(
             "text-xl font-heading font-bold mt-1 transition-colors duration-500",
             theme === 'dark' ? "text-white" : "text-gray-900"
-          )}>Grouped ranked bars</h3>
+          )}>OS Distribution</h3>
           <p className={cn(
             "text-[13px] font-light mt-1 max-w-[280px] transition-colors duration-500",
             theme === 'dark' ? "text-white/40" : "text-gray-500"
@@ -89,7 +89,7 @@ export const OSDistributionCard: React.FC = () => {
             ? "border-white/10 text-white hover:bg-white hover:text-black" 
             : "border-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white"
         )}>
-          Build this <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+          View more <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
         </button>
       </div>
 

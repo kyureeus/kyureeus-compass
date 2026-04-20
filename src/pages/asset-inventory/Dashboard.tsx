@@ -11,6 +11,7 @@ import { AssetTable } from './components/AssetTable';
 import { AssetInventoryHeader } from './components/AssetInventoryHeader';
 import { BotSidebar } from './components/BotSidebar';
 import { AssetDistributionDialog } from './components/AssetDistributionDialog';
+import { AgentCoverageDialog } from './components/AgentCoverageDialog';
 import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../lib/utils';
 
@@ -18,11 +19,13 @@ export const Dashboard: React.FC = () => {
   const { theme } = useTheme();
   const [isBotOpen, setIsBotOpen] = useState(false);
   const [isDistributionOpen, setIsDistributionOpen] = useState(false);
+  const [isAgentCoverageOpen, setIsAgentCoverageOpen] = useState(false);
 
   return (
     <DashboardLayout>
       <BotSidebar isOpen={isBotOpen} onClose={() => setIsBotOpen(false)} />
       <AssetDistributionDialog isOpen={isDistributionOpen} onClose={() => setIsDistributionOpen(false)} />
+      <AgentCoverageDialog isOpen={isAgentCoverageOpen} onClose={() => setIsAgentCoverageOpen(false)} />
       {/* Sticky Layout Header */}
       <header className={cn(
         "h-16 border-b transition-all duration-500 backdrop-blur-xl px-8 flex items-center sticky top-0 z-30",
@@ -72,6 +75,7 @@ export const Dashboard: React.FC = () => {
             TrendIcon={TriangleAlert}
             Icon={ShieldCheck}
             delay={0.2}
+            onClick={() => setIsAgentCoverageOpen(true)}
           />
           <StatsCard 
             title="Active Assets (24H)"

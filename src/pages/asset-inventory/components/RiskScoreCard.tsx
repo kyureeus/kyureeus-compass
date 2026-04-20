@@ -88,8 +88,8 @@ export const RiskScoreCard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold transition-colors duration-500", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Concept 2</span>
-          <h3 className={cn("text-xl font-heading font-bold mt-1 capitalize transition-colors duration-500", theme === 'dark' ? "text-white" : "text-gray-900")}>Severity funnel with urgency sizing</h3>
+          <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold transition-colors duration-500", theme === 'dark' ? "text-white/30" : "text-gray-400")}>Device risk levels</span>
+          <h3 className={cn("text-xl font-heading font-bold mt-1 capitalize transition-colors duration-500", theme === 'dark' ? "text-white" : "text-gray-900")}>ACR Risk Score</h3>
           <p className={cn("text-[13px] font-light mt-1 transition-colors duration-500", theme === 'dark' ? "text-white/40" : "text-gray-500")}>Tiered risk analysis by asset urgency</p>
         </div>
         <button className={cn(
@@ -98,7 +98,7 @@ export const RiskScoreCard: React.FC = () => {
             ? "border-white/10 text-white hover:bg-white hover:text-black" 
             : "border-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white"
         )}>
-          Build <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+          View more <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
         </button>
       </div>
 
