@@ -2,63 +2,57 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles,
-  LayoutGrid, 
-  Cpu, 
+  Link2, 
   Shield, 
-  Box, 
-  Database,
+  Layers, 
+  ShieldAlert,
   Sun,
   Moon,
   LogOut
 } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { cn } from '../../../lib/utils';
 import { useTheme } from '../../../context/ThemeContext';
 
-type MenuItem = {
-  icon: React.ElementType;
-  label: string;
-  path: string;
-  badge?: string;
-};
+interface SidebarProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
 
-type MenuSection = {
-  title?: string;
-  divider?: boolean;
-  items: MenuItem[];
-};
-
-const menuSections: MenuSection[] = [
-  {
-    title: "Tenable Assets",
-    items: [
-      { icon: LayoutGrid, label: 'IT Assets', path: '/asset-inventory/it-assets' },
-      { icon: Cpu, label: 'OT Assets', path: '/asset-inventory/ot-assets' },
-      { icon: Shield, label: 'Network', path: '/asset-inventory/network' },
-      { icon: Box, label: 'IoT / Peripherals', path: '/asset-inventory/iot' },
-      { icon: Database, label: 'Unclassified', path: '/asset-inventory/unclassified' },
-    ]
-  },
-  {
-    title: "NinjaOne Assets",
-    divider: true,
-    items: [
-      { icon: LayoutGrid, label: 'Managed Endpoints', path: '/asset-inventory/endpoints' },
-      { icon: Shield, label: 'Security Compliance', path: '/asset-inventory/compliance' },
-    ]
-  }
-];
-
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
 
-  const isItemActive = (path: string) => location.pathname === path;
-
-  // Compass Global primary color (Purple)
-  const activeColor = "text-primary";
-  const activeBg = theme === 'dark' ? "bg-primary/10" : "bg-primary/5";
+  const tabs = [
+    { 
+      id: 'unified', 
+      label: 'Unified Asset Inventory', 
+      icon: Link2, 
+      activeColor: 'text-primary', 
+      activeBg: theme === 'dark' ? 'bg-primary/10' : 'bg-primary/5',
+    },
+    { 
+      id: 'tenable', 
+      label: 'Tenable Classification', 
+      icon: Shield, 
+      activeColor: 'text-[#f97316]', 
+      activeBg: theme === 'dark' ? 'bg-[#f97316]/10' : 'bg-[#f97316]/5',
+    },
+    { 
+      id: 'ninjaone', 
+      label: 'NinjaOne Classification', 
+      icon: Layers, 
+      activeColor: 'text-[#8b5cf6]', 
+      activeBg: theme === 'dark' ? 'bg-[#8b5cf6]/10' : 'bg-[#8b5cf6]/5',
+    },
+    { 
+      id: 'crowdstrike', 
+      label: 'CrowdStrike Classification', 
+      icon: ShieldAlert, 
+      activeColor: 'text-[#ff0000]', 
+      activeBg: theme === 'dark' ? 'bg-[#ff0000]/10' : 'bg-[#ff0000]/5',
+    },
+  ];
 
   return (
     <motion.aside
@@ -88,78 +82,57 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation Area */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide py-4 px-4 custom-scrollbar">
-        <nav className="flex flex-col gap-8">
-          {menuSections.map((section, sIdx) => (
-            <div key={sIdx} className="flex flex-col gap-1 w-full">
-              {/* Section Title */}
-              <AnimatePresence>
-                {isExpanded && section.title && (
-                  <motion.span 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className={cn(
-                      "px-4 text-[10px] font-bold uppercase tracking-[0.2em] mb-2 whitespace-nowrap transition-colors duration-500",
-                      theme === 'dark' ? "text-white/30" : "text-gray-400"
-                    )}
-                  >
-                    {section.title}
-                  </motion.span>
+        <nav className="flex flex-col gap-2 w-full">
+          {tabs.map((tab) => {
+            const active = activeTab === tab.id;
+            
+            return (
+              <button 
+                key={tab.id} 
+                onClick={() => onTabChange(tab.id)}
+                className={cn(
+                  "group relative flex items-center h-12 w-full rounded-none px-4 cursor-pointer transition-all duration-200 border-none",
+                  active 
+                    ? cn(tab.activeBg, tab.activeColor) 
+                    : theme === 'dark' 
+                      ? "text-white/40 hover:bg-white/5 hover:text-white/80"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                 )}
-              </AnimatePresence>
+              >
+                {/* Active Indicator Pillar */}
+                {active && (
+                   <div className={cn("absolute left-0 top-0 bottom-0 w-[2px]", tab.activeColor.replace('text-', 'bg-'))}></div>
+                )}
 
-              {section.items.map((item) => {
-                const active = isItemActive(item.path);
+                <tab.icon 
+                  size={18} 
+                  strokeWidth={1.5} 
+                  className={cn(
+                    "shrink-0 transition-colors duration-200", 
+                    active 
+                      ? tab.activeColor 
+                      : theme === 'dark' ? "group-hover:text-white" : "group-hover:text-gray-900"
+                  )} 
+                />
                 
-                return (
-                  <Link 
-                    key={item.path} 
-                    to={item.path}
-                    className={cn(
-                      "group relative flex items-center h-10 rounded-none px-4 cursor-pointer transition-all duration-200",
-                      active 
-                        ? cn(activeBg, activeColor) 
-                        : theme === 'dark' 
-                          ? "text-white/40 hover:bg-primary/5 hover:text-primary/80"
-                          : "text-gray-500 hover:bg-primary/5 hover:text-primary"
-                    )}
-                  >
-                    {/* Active Indicator Pillar (Compass Style - Sharp) */}
-                    {active && (
-                       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-primary"></div>
-                    )}
-
-                    <item.icon 
-                      size={18} 
-                      strokeWidth={1.5} 
-                      className={cn(
-                        "shrink-0 transition-colors duration-200", 
-                        active 
-                          ? activeColor 
-                          : theme === 'dark' ? "group-hover:text-white" : "group-hover:text-primary"
-                      )} 
-                    />
-                    
-                    <motion.div 
-                      initial={false}
-                      animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
-                      className="ml-4 flex items-center justify-between overflow-hidden whitespace-nowrap"
-                    >
-                      <span className="font-medium text-[14px]">{item.label}</span>
-                    </motion.div>
-                    
-                    {/* Targeting Corners on Active */}
-                    {active && (
-                      <div className={cn("absolute inset-0 border border-primary/20", theme === 'light' && "border-primary/10")}>
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/40"></div>
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/40"></div>
-                      </div>
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-          ))}
+                <motion.div 
+                  initial={false}
+                  animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
+                  className="ml-4 flex items-center justify-between overflow-hidden whitespace-nowrap"
+                >
+                  <span className="font-medium text-[14px]">{tab.label}</span>
+                </motion.div>
+                
+                {/* Targeting Corners on Active */}
+                {active && (
+                  <div className={cn("absolute inset-0 border", theme === 'light' ? "border-black/5" : "border-white/5")}>
+                    <div className={cn("absolute top-0 left-0 w-2 h-2 border-t border-l", theme === 'light' ? "border-black/10" : "border-white/10")}></div>
+                    <div className={cn("absolute bottom-0 right-0 w-2 h-2 border-b border-r", theme === 'light' ? "border-black/10" : "border-white/10")}></div>
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </nav>
       </div>
 

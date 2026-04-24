@@ -1,0 +1,193 @@
+{
+  "assets": [
+    {
+      "id": "436224b4-e3e7-4761-ad47-e32daaebec6b",
+      "has_agent": true,
+      "last_seen": "2025-04-30T12:45:41.039Z",
+      "last_scan_target": "192.0.2.151",
+      "sources": [
+        { "name": "NESSUS_SCAN", "first_seen": "2025-04-18T10:31:22.214Z", "last_seen": "2025-04-18T13:39:54.799Z" },
+        { "name": "NESSUS_AGENT", "first_seen": "2025-04-18T11:48:03.328Z", "last_seen": "2025-04-30T12:45:41.039Z" }
+      ],
+      "acr_score": 5,
+      "acr_drivers": [
+        { "driver_name": "device_type", "driver_value": ["general_purpose"] },
+        { "driver_name": "internet_exposure", "driver_value": ["internal"] }
+      ],
+      "exposure_score": 686,
+      "ipv4": ["192.0.2.151"],
+      "fqdn": ["lab.example.com"],
+      "mac_address": ["10:50:56:a6:90:fb"],
+      "operating_system": ["Oracle Linux Server 8.7"],
+      "hostname": ["ol-euk-8.4.support.lab.tenablesecurity.com"],
+      "agent_name": ["example-name"]
+    },
+    {
+      "id": "a3f9c21d-55c5-4ed4-9a11-1e876790a630",
+      "has_agent": true,
+      "last_seen": "2025-06-16T08:23:24.640Z",
+      "last_scan_target": "198.51.100.227",
+      "sources": [
+        { "name": "NESSUS_AGENT", "first_seen": "2024-10-03T07:31:15.437Z", "last_seen": "2024-11-13T07:25:28.000Z" }
+      ],
+      "acr_score": 4,
+      "acr_drivers": [
+        { "driver_name": "device_type", "driver_value": ["general_purpose"] }
+      ],
+      "exposure_score": 622,
+      "ipv4": ["198.51.100.227"],
+      "fqdn": ["lab2.example.com"],
+      "mac_address": ["40:50:56:a6:ba:36"],
+      "operating_system": ["SLES for SAP 15.3"],
+      "hostname": ["example-suse15sp3"],
+      "agent_name": ["genie-suse15"]
+    },
+    {
+      "id": "377bd14b-8395-418b-b8f1-c948a05c49af",
+      "has_agent": false,
+      "last_seen": "2025-06-16T08:23:24.640Z",
+      "last_scan_target": "203.0.113.144",
+      "sources": [
+        { "name": "NESSUS_SCAN", "first_seen": "2025-06-16T08:23:24.640Z", "last_seen": "2025-06-16T08:23:24.640Z" }
+      ],
+      "acr_score": 5,
+      "acr_drivers": [
+        { "driver_name": "internet_exposure", "driver_value": ["internal"] }
+      ],
+      "exposure_score": 628,
+      "ipv4": ["203.0.113.144"],
+      "fqdn": ["lab3.example.com"],
+      "mac_address": ["02:50:56:a6:2a:0f"],
+      "operating_system": ["Oracle Linux 8.10"],
+      "hostname": ["example-host"],
+      "agent_name": []
+    },
+    {
+      "id": "e2f1a9b8-44d3-4e52-9b7e-7c6d5a4b3c2d",
+      "has_agent": true,
+      "last_seen": "2025-07-01T10:00:00.000Z",
+      "last_scan_target": "10.0.5.50",
+      "sources": [
+        { "name": "NESSUS_AGENT", "first_seen": "2025-01-10T08:00:00.000Z", "last_seen": "2025-07-01T10:00:00.000Z" }
+      ],
+      "acr_score": 7,
+      "acr_drivers": [],
+      "exposure_score": 750,
+      "ipv4": ["10.0.5.50"],
+      "fqdn": ["prod-db-01.internal"],
+      "mac_address": ["00:50:56:b1:c2:d3"],
+      "operating_system": ["Windows Server 2022"],
+      "hostname": ["PROD-DB-01"],
+      "agent_name": ["agent-db-01"]
+    },
+    {
+      "id": "f5e4d3c2-b1a0-4987-a6b5-c4d3e2f1a0b5",
+      "has_agent": false,
+      "last_seen": "2025-07-05T14:30:00.000Z",
+      "last_scan_target": "172.16.20.10",
+      "sources": [
+        { "name": "NESSUS_SCAN", "first_seen": "2025-07-05T14:00:00.000Z", "last_seen": "2025-07-05T14:30:00.000Z" }
+      ],
+      "acr_score": 3,
+      "acr_drivers": [],
+      "exposure_score": 310,
+      "ipv4": ["172.16.20.10"],
+      "fqdn": ["web-proxy-04.dmz"],
+      "mac_address": ["08:00:27:d4:e5:f6"],
+      "operating_system": ["Ubuntu 22.04 LTS"],
+      "hostname": ["WEB-PROXY-04"],
+      "agent_name": []
+    },
+    {
+      "id": "11223344-5566-7788-9900-aabbccddeeff",
+      "has_agent": true,
+      "last_seen": "2025-07-10T09:15:00.000Z",
+      "last_scan_target": "10.10.10.100",
+      "sources": [
+        { "name": "NESSUS_AGENT", "first_seen": "2025-03-20T11:00:00.000Z", "last_seen": "2025-07-10T09:15:00.000Z" }
+      ],
+      "acr_score": 6,
+      "acr_drivers": [],
+      "exposure_score": 580,
+      "ipv4": ["10.10.10.100"],
+      "fqdn": ["win-wk-15.corp.local"],
+      "mac_address": ["ac:de:48:00:11:22"],
+      "operating_system": ["Windows 11 Pro"],
+      "hostname": ["WIN-WK-15"],
+      "agent_name": ["agent-win11"]
+    },
+    {
+      "id": "fedcba98-7654-3210-0123-456789abcdef",
+      "has_agent": true,
+      "last_seen": "2025-07-12T16:45:00.000Z",
+      "last_scan_target": "192.168.1.15",
+      "sources": [
+        { "name": "NESSUS_AGENT", "first_seen": "2025-05-15T12:00:00.000Z", "last_seen": "2025-07-12T16:45:00.000Z" }
+      ],
+      "acr_score": 4,
+      "acr_drivers": [],
+      "exposure_score": 420,
+      "ipv4": ["192.168.1.15"],
+      "fqdn": ["mkt-lap-sarah.wifi"],
+      "mac_address": ["f0:18:98:e2:34:56"],
+      "operating_system": ["macOS 14.5"],
+      "hostname": ["MKT-LAP-SARAH"],
+      "agent_name": ["mac-agent-01"]
+    },
+    {
+      "id": "55667788-9900-aabb-ccdd-eeff00112233",
+      "has_agent": false,
+      "last_seen": "2025-07-14T11:30:00.000Z",
+      "last_scan_target": "10.0.100.1",
+      "sources": [
+        { "name": "NESSUS_SCAN", "first_seen": "2025-07-14T11:00:00.000Z", "last_seen": "2025-07-14T11:30:00.000Z" }
+      ],
+      "acr_score": 9,
+      "acr_drivers": [],
+      "exposure_score": 890,
+      "ipv4": ["10.0.100.1"],
+      "fqdn": ["firewall-hq.internal"],
+      "mac_address": ["00:0a:f7:11:22:33"],
+      "operating_system": ["FortiOS 7.2.5"],
+      "hostname": ["CORP-FW-01"],
+      "agent_name": []
+    },
+    {
+      "id": "99887766-5544-3322-1100-ffeeddccbbaa",
+      "has_agent": true,
+      "last_seen": "2025-07-15T08:00:00.000Z",
+      "last_scan_target": "172.31.0.50",
+      "sources": [
+        { "name": "NESSUS_AGENT", "first_seen": "2025-06-01T10:00:00.000Z", "last_seen": "2025-07-15T08:00:00.000Z" }
+      ],
+      "acr_score": 5,
+      "acr_drivers": [],
+      "exposure_score": 510,
+      "ipv4": ["172.31.0.50"],
+      "fqdn": ["ec2-instance-prod-02.aws"],
+      "mac_address": ["02:d1:a2:b3:c4:d5"],
+      "operating_system": ["Amazon Linux 2023"],
+      "hostname": ["AWS-EC2-PROD-02"],
+      "agent_name": ["agent-aws-ec2"]
+    },
+    {
+      "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "has_agent": false,
+      "last_seen": "2025-07-15T15:20:00.000Z",
+      "last_scan_target": "192.168.10.200",
+      "sources": [
+        { "name": "NESSUS_SCAN", "first_seen": "2025-07-15T15:00:00.000Z", "last_seen": "2025-07-15T15:20:00.000Z" }
+      ],
+      "acr_score": 2,
+      "acr_drivers": [],
+      "exposure_score": 150,
+      "ipv4": ["192.168.10.200"],
+      "fqdn": ["printer-hr.internal"],
+      "mac_address": ["00:11:22:33:44:55"],
+      "operating_system": ["HP JetDirect"],
+      "hostname": ["HP-PRINTER-HR"],
+      "agent_name": []
+    }
+  ],
+  "total": 10
+}

@@ -6,9 +6,11 @@ import { cn } from '../../../lib/utils';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
-const LayoutContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const LayoutContent: React.FC<{ children: React.ReactNode, activeTab: string, onTabChange: (tab: string) => void }> = ({ children, activeTab, onTabChange }) => {
   const { theme } = useTheme();
   
   const darkColors = ["#050505", "#0a041a", "#1a0b3b", "#2a115e", "#3730a3", "#4f46e5", "#7777fa"];
@@ -27,7 +29,7 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       />
 
       {/* Collapsible Sidebar Navigation */}
-      <Sidebar />
+      <Sidebar activeTab={activeTab} onTabChange={onTabChange} />
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto relative z-10 w-full h-screen">
@@ -37,6 +39,6 @@ const LayoutContent: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   );
 };
 
-export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  return <LayoutContent>{children}</LayoutContent>;
+export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, activeTab, onTabChange }) => {
+  return <LayoutContent activeTab={activeTab} onTabChange={onTabChange}>{children}</LayoutContent>;
 };
